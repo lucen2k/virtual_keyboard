@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Keyboard - jQuery Plugin Demo</title>
+<link href="http://code.jquery.com/ui/1.9.0/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.js"></script>
+<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.min.js"></script>
+<link href="css/keyboard.css" rel="stylesheet">
+<script src="js/jquery.keyboard.js"></script>
+
+<!-- keyboard extensions (optional) -->
+<script src="js/jquery.keyboard.extension-typing.js"></script>
+<script src="js/jquery.keyboard.extension-previewkeyset.js"></script>
+
+<!-- preloaded keyboard layout -->
+<script src="layouts/keyboard-layouts-microsoft.js" charset="utf-8"></script>
+
+<script>
+$(function(){
+  $('#demo').keyboard();
+});
+</script>
+
+<script>
+$(function(){
+
+	var t,
+		o = '',
+		layouts = [];
+
+	// Change display language, if the definitions are available
+	showKb = function(layout){
+		var kb = $('#multi').getkeyboard();
+		kb.options.layout = layout;
+		// redraw keyboard with new layout
+		kb.redraw();
+	};
+
+	$.each(jQuery.keyboard.layouts, function(i, l){
+		if (l.name) {
+			layouts.push([i,l.name]);
+		}
+	});
+	// sort select options by language name, not
+	layouts.sort( function( a, b ) {
+		return a[1] > b[1] ? 1 : a[1] < b[1] ? -1 : 0;
+	});
+	$.each(layouts, function(i, l){
+		o += '<option value="' + l[0] + '">' + l[1] + '</option>';
+	});
+
+	$('#multi').keyboard({
+		layout: 'qwerty',
+		stayOpen: true
+	})
+	// activate the typing extension
+	.addTyping({
+		showTyping: true,
+		delay: 200
+	})
+	.previewKeyset();
+
+	$('#lang')
+		.html(o)
+		.change(function(){
+			var kb = $('#multi'),
+				$this = $(this),
+				$opt = $this.find('option:selected'),
+				layout = $this.val();
+			$('h2').text( $opt.text() );
+			showKb( layout );
+		}).trigger('change');
+
+});
+</script>
+<style>
+.rtl {
+	text-align: right;
+}
+</style>
+
+</head>
+<body>
+		<div class="row">
+			<div class="col-xs-4"></div>
+  		<div class="col-xs-4">
+				<select class="form-control" id="lang"></select>
+				<div style="height: 50px;"></div>
+			</div>
+		</div>
+<h1>Keyboard sample</h1>
+<input id="demo" type="text">
+
+<h2></h2>
+<input id="multi" type="text" />
+ 
+</body>
+</html>
