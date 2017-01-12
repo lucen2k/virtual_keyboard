@@ -4,4 +4,3 @@
 
 * http://webkaru.net/jquery-plugin/keyboard/
 * https://mottie.github.io/Keyboard/
-* 
